@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Crud.Infrastructure.Interface;
+﻿using Crud.Infrastructure.Interface;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using MongoDB.Driver.Core.Configuration;
 
@@ -11,13 +7,13 @@ namespace Crud.Infrastructure.Persistence.Context
 {
     public class MongoDbContext : IDbContext
     {
-        public string _connectionString { get; set; }
+        private string _connectionString { get; set; }
 
-        public string _databaseName { get; set; }
+        private string _databaseName { get; set; }
 
-        public static IMongoClient MongoClient { get; set; }
+        public IMongoClient MongoClient { get; set; }
 
-        public static IMongoDatabase Database { get; private set; }
+        public IMongoDatabase Database { get; set; }
 
         public MongoDbContext(string connectionString, string databaseName)
         {
@@ -29,6 +25,14 @@ namespace Crud.Infrastructure.Persistence.Context
 
             MongoClient = new MongoClient(connectionString);
             Database = MongoClient.GetDatabase(databaseName);
+        }
+
+        public IMongoCollection<T> GetCollectionByName<T>(string nameCollection)
+        {
+            if (string.IsNullOrEmpty(nameCollection))
+                throw new ArgumentException("name collection  is required.", nameof(nameCollection));
+
+            return Database.GetCollection<T>(nameCollection);
         }
 
         private void ValidConnectionString(string connectionString)
