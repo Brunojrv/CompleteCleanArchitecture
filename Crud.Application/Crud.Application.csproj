@@ -7,10 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
+    <Folder Include="CRQS\Commands\Patient\" />
     <Folder Include="Dtos\" />
-    <Folder Include="UserCases\" />
-    <Folder Include="Service\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Crud.Domain\Crud.Domain.csproj" />
+    <ProjectReference Include="..\Crud.Infrastructure\Crud.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
